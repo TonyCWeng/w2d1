@@ -3,20 +3,21 @@ require_relative "board.rb"
 require_relative "cursor.rb"
 
 class Display
-  def initialize(cursor = Cursor.new([0,0], board), board = Board.new)
+  #cursor = Cursor.new([0,0], board = Board.new)
+  def initialize(board = Board.new)
     @board = board
-    @cursor = cursor #Cursor.new([0,0], board)
+    #@cursor = cursor 'Cursor.new([0,0], board)
   end
 
   def render
     header = (0..7).to_a.join(" ")
     p "  #{header}"
-    @board.rows.each_with_index { |row, i| display_row(row, i) }
-    @board[@cursor.cursor_pos].colorize(:red)
+    @board.each_with_index { |row, i| display_row(row, i) }
+
    end
 
   def display_row(row, i)
-    chars = row.map { |el| "P" }.join("  ")
+    chars = row.map { |el| "#{el.symbol}" }.join("  ")
     p "#{i} #{chars}"
   end
 
