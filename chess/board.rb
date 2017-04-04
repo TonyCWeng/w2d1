@@ -37,9 +37,7 @@ class Board
 
   def move_piece(start_pos, end_pos)
     if valid_move?(start_pos, end_pos)
-      x,y = start_pos
-      i,j = end_pos
-      @board[x][y], @board[i][j] = @board[i][j], @board[x][y]
+      self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
     end
   end
 
@@ -49,13 +47,11 @@ class Board
   end
 
   def valid_move?(start_pos, end_pos)
-    raise "Not on board!" unless valid_position?(start_pos) ||
-    valid_position?(end_pos)
+    #raise "Not on board!" unless valid_position?(start_pos) ||
+    #valid_position?(end_pos)
 
-    x,y = start_pos
-    raise "Not piece" unless @board[x][y].is_a? Piece
-    i,j = end_pos
-    raise "Occupied" if @board[i][j].is_a? Piece
+    raise "Not piece" unless self[start_pos].is_a? Piece
+    raise "Occupied" if self[end_pos].is_a? Piece
     true
   end
 
@@ -67,6 +63,14 @@ class Board
   def []=(pos, piece)
     x, y = pos
     @board[x][y] = piece
+  end
+
+  def rows
+    @board
+  end
+
+  def cols
+    @board.transpose
   end
 
 end
