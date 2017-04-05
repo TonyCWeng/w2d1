@@ -17,8 +17,40 @@ class Piece
     self.is_a?(NullPiece)
   end
 
-  def valid_moves
+  def valid?
+    moves = self.dup
+    valids = []
 
+    if color == :white
+      moves.each do |spot|
+        unless board[pos].is_a? NullPiece && board[pos].color == :white
+          valids << spot
+        end
+      end
+    end
+
+    if color == :black
+      moves.each do |spot|
+        unless board[pos].is_a? NullPiece && board[pos].color == :black
+          valids << spot
+        end
+      end
+    end
+    valids
+  end
+
+  def valid_moves
+    #set of moves that place your king out of check/checkmate
+    #needs to duplicate board to determine if a move would do so
+    all_moves = self.dup
+    all_moves.select {|move| move unless move_into_check?(end_pos)}
+  end
+
+  def move_into_check?(end_pos)
+    scenario = board.deep_dup
+    #deep dups and has the same set of pieces on board
+    scenario.take_turn(end_pos)
+    scenario.in_check?(color)
   end
 
 end

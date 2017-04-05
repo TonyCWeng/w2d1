@@ -43,11 +43,25 @@ class Pawn < Piece
   end
 
   def side_attacks
-    w_attacks = [[1,-1], [1,1]]
-    b_attacks = [[-1,-1], [-1,1]]
+    attacks = []
+    x,y = pos
+    w_attacks = [[x+1,y-1], [x+1,x+1]]
+    b_attacks = [[x-1,y-1], [x-1,y+1]]
     if color == :white
+      w_attacks.each do |spot|
+        unless board[pos].is_a? NullPiece && board[pos].color == :white
+          attacks << spot
+        end
+      end
     end
+    
     if color == :black
+      b_attacks.each do |spot|
+        unless board[pos].is_a? NullPiece && board[pos].color == :black
+          attacks << spot
+        end
+      end
     end
+    attacks
   end
 end

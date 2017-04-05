@@ -69,7 +69,7 @@ class Board
     end
   end
 
-  def self.in_bounds?(pos)
+  def in_bounds?(pos)
     pos.all? {|el| el.between?(0,7) }
   end
 
@@ -95,6 +95,30 @@ class Board
   def cols
     @board.transpose
   end
+
+  def in_check?(color)
+    kings_pos = nil
+    (0..7).each do |row|
+      (0..7).each do |col|
+        if board[[row,col]].is_a? King &&  board[[row,col]].color == color
+          kings_pos = [row,col]
+        end
+      end
+    end
+
+    enemies = board.flatten.select { |el| el unless el.color == color }
+    enemies.each do |enemy|
+      enemy.moves.each do |move|
+        return true if move == kings_pos
+      end
+    end
+    false
+  end
+
+  def checkmate?(color)
+    color.in_check? && valid_moves.length == 0
+  end
+
 
 end
 
